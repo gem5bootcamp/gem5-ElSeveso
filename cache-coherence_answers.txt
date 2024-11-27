@@ -1,0 +1,142 @@
+Question 1: 
+Hurt the performance, for 1 thread obtain an avg of 0.2 aprox and with 8 threads an avg of 0.6
+
+Question 2:
+The performance have a peak with 2 threads but after when the amount of threads are incrising thats hurt the performance
+
+                        Speedup
+1 thread:   0.224518    1
+2 threads:  0.145631    1.54
+4 threads:  0.286462    0.78
+8 threads:  0.583497    0,39
+
+
+Question 3: 
+            1           2           3           4           5           6
+1 thread:   0.243634    0.200661    0.244475    0.217104    0.274892    0.224518    
+2 threads:  0.299969    0.223480    0.358248    0.368506    0.142315    0.145631    
+4 threads:  0.400887    0.506123    0.410655    0.449898    0.234658    0.286462    
+8 threads:  0.614435    0.723799    0.579874    0.611028    0.593706    0.583497
+
+a) The best optimization was put padding between the result addresses
+b) When a thread try to write on results and other thread make the same, one of them should wait for the other. If hardware would allow multiple simultaneous writes that does not occur.
+
+
+Question 4:
+a)                    1           6           SpeedUp
+    16 threads:     0.000913    0.000111    8.23
+
+b) Nada que ver, en el real con 8 threads daba por debajo de 0.4x y en el entorno simulado por encima de 8.2x
+
+Question 5:
+HitRatio:
+                1           2           3           4           5           6
+16 threads:     85.19       85.61       84.42       84.60       86.12       83.74
+
+We have to compare algorithms 2, 3, and 5. Since 16 ints are needed to fill the 64KiB cache, if, every time I access memory I bring 16 ints,
+and I have 16 threads that make memory access in a coalesced way, theoretically for each iteration I will have 1 miss (the first access) and 15 hits (all the remaining ones).
+On the other hand, I understand that writing in spaced memory locations should negatively affect the performance of the algorithm and that ideally, 3 should be better.
+But the results show that this is not true.
+
+
+Question 6:
+Fwd_GETS: (Without the first column)
+1:
+    1800     75.76%     93.14% |          13      0.55%     93.69% |          11      0.46%     94.15% |          12      0.51%     94.65% |
+    12      0.51%     95.16% |          11      0.46%     95.62% |          12      0.51%     96.13% |          11      0.46%     96.59% |
+    13      0.55%     97.14% |          13      0.55%     97.69% |          10      0.42%     98.11% |          13      0.55%     98.65% |
+    10      0.42%     99.07% |           8      0.34%     99.41% |           6      0.25%     99.66% |           8      0.34%    100.00% 
+2: 
+    19      3.16%     71.21% |          14      2.33%     73.54% |          13      2.16%     75.71% |          13      2.16%     77.87% |
+    13      2.16%     80.03% |          13      2.16%     82.20% |          14      2.33%     84.53% |          13      2.16%     86.69% |
+    13      2.16%     88.85% |          14      2.33%     91.18% |          11      1.83%     93.01% |          10      1.66%     94.68% |
+    10      1.66%     96.34% |           5      0.83%     97.17% |           8      1.33%     98.50% |           9      1.50%    100.00% 
+
+3:
+
+    1803     75.47%     93.01% |          16      0.67%     93.68% |          13      0.54%     94.22% |          16      0.67%     94.89% |
+    12      0.50%     95.40% |          11      0.46%     95.86% |          12      0.50%     96.36% |          12      0.50%     96.86% |
+    11      0.46%     97.32% |          11      0.46%     97.78% |          12      0.50%     98.28% |          12      0.50%     98.79% |
+    8      0.33%     99.12% |           8      0.33%     99.46% |           7      0.29%     99.75% |           6      0.25%    100.00% 
+
+4:
+    21      3.40%     70.66% |          15      2.43%     73.10% |          12      1.94%     75.04% |          16      2.59%     77.63% |
+    14      2.27%     79.90% |          13      2.11%     82.01% |          14      2.27%     84.28% |          13      2.11%     86.39% |
+    13      2.11%     88.49% |          13      2.11%     90.60% |          14      2.27%     92.87% |          13      2.11%     94.98% |
+    9      1.46%     96.43% |           7      1.13%     97.57% |           7      1.13%     98.70% |           8      1.30%    100.00% 
+
+5:
+    1764     73.68%     90.94% |          50      2.09%     93.02% |          10      0.42%     93.44% |          13      0.54%     93.98% |
+    11      0.46%     94.44% |          12      0.50%     94.95% |          14      0.58%     95.53% |          11      0.46%     95.99% |
+    16      0.67%     96.66% |           8      0.33%     96.99% |          12      0.50%     97.49% |          12      0.50%     97.99% |
+    13      0.54%     98.54% |          14      0.58%     99.12% |          15      0.63%     99.75% |           6      0.25%    100.00% 
+
+6:
+    21      3.32%     67.46% |          12      1.90%     69.35% |          14      2.21%     71.56% |          13      2.05%     73.62% |
+    15      2.37%     75.99% |          14      2.21%     78.20% |          16      2.53%     80.73% |          15      2.37%     83.10% |
+    14      2.21%     85.31% |          14      2.21%     87.52% |          15      2.37%     89.89% |          15      2.37%     92.26% |
+    13      2.05%     94.31% |          14      2.21%     96.52% |          16      2.53%     99.05% |           6      0.95%    100.00% 
+
+Chunking the array is the optimization that causes the biggest impact in read sharing, the data shows that in algorithms 2, 4, and 6 the access between caches is 
+more uniform and lower than other optimizations. The results make sense because with this optimization each thread makes her access to global memory and stores in cache all the data necessary for the actual iteration.
+
+Question 7:
+
+1:
+        2003      6.10%      6.23% |        2056      6.26%     12.50% |        2056      6.26%     18.76% |        2056      6.26%     25.03% |
+        2056      6.26%     31.29% |        2056      6.26%     37.56% |        2055      6.26%     43.82% |        2055      6.26%     50.08% |
+        2055      6.26%     56.34% |        2055      6.26%     62.61% |        2044      6.23%     68.83% |        2055      6.26%     75.10% |
+        2044      6.23%     81.32% |        2046      6.23%     87.56% |        2044      6.23%     93.79% |        2039      6.21%    100.00% 
+2:
+        1974      6.02%      6.16% |        2052      6.26%     12.42% |        2056      6.27%     18.69% |        2056      6.27%     24.96% |
+        2056      6.27%     31.24% |        2056      6.27%     37.51% |        2056      6.27%     43.78% |        2056      6.27%     50.05% |
+        2056      6.27%     56.32% |        2056      6.27%     62.60% |        2045      6.24%     68.83% |        2044      6.24%     75.07% |
+        2046      6.24%     81.31% |        2050      6.25%     87.57% |        2040      6.22%     93.79% |        2036      6.21%    100.00% 
+
+3:
+        2007      6.13%      6.25% |        2059      6.29%     12.54% |        2057      6.28%     18.82% |        2026      6.19%     25.01% |
+        2000      6.11%     31.12% |        2056      6.28%     37.40% |        2055      6.28%     43.68% |        2055      6.28%     49.96% |
+        2055      6.28%     56.23% |        2055      6.28%     62.51% |        2055      6.28%     68.79% |        2055      6.28%     75.06% |
+        2043      6.24%     81.30% |        2044      6.24%     87.55% |        2042      6.24%     93.78% |        2035      6.22%    100.00%
+
+4:
+        1949      5.98%      6.10% |        2025      6.21%     12.31% |        2052      6.29%     18.61% |        2018      6.19%     24.80% |
+        1962      6.02%     30.81% |        2054      6.30%     37.11% |        2056      6.31%     43.42% |        2056      6.31%     49.73% |    
+        2056      6.31%     56.03% |        2056      6.31%     62.34% |        2056      6.31%     68.64% |        2056      6.31%     74.95% |
+        2045      6.27%     81.22% |        2045      6.27%     87.50% |        2042      6.26%     93.76% |        2035      6.24%    100.00%
+
+5:
+        13      6.70%     27.84% |           8      4.12%     31.96% |           7      3.61%     35.57% |           6      3.09%     38.66% |
+        6      3.09%     41.75% |           8      4.12%     45.88% |          15      7.73%     53.61% |           8      4.12%     57.73% |
+        16      8.25%     65.98% |           4      2.06%     68.04% |           4      2.06%     70.10% |          14      7.22%     77.32% |
+        14      7.22%     84.54% |          14      7.22%     91.75% |          14      7.22%     98.97% |           2      1.03%    100.00%
+
+6:
+        15      6.52%     27.39% |           4      1.74%     29.13% |           1      0.43%     29.57% |          14      6.09%     35.65% |
+        13      5.65%     41.30% |          13      5.65%     46.96% |          13      5.65%     52.61% |          13      5.65%     58.26% |
+        13      5.65%     63.91% |          13      5.65%     69.57% |          13      5.65%     75.22% |          14      6.09%     81.30% |
+        14      6.09%     87.39% |          14      6.09%     93.48% |          13      5.65%     99.13% |           2      0.87%    100.00%
+
+The results show that algorithms 5 and 6 have the best write sharing, so the form of improved statistic is putting padding between the result addresses.
+
+Question 8:
+
+    a)
+                        1           2           3           4           5           6
+Memory Latency Mean:    33.5        36.2        20.6        19.9        3.1         1.4
+Performance:            0.000913    0.000911    0.000694    0.000693    0.000145    0.000111
+
+It is clear that writing has a greater weight than the others since it noticeably affects the memory latency and ends up directly affecting the performance of the algorithm, therefore the optimization of write sharing is the one that has the greatest impact on the time of the algorithm.
+
+    b)
+    The hardware caracteristic that cause this can be the slow access between caches.
+
+
+Question 9:
+
+In algorithms with a lower percentage of access between caches this variant of latency into caches does not affect the performance in a big way (algorithm 6), but in algorithms with a lot of access to others caches destroy the performance (algorithm 1).
+
+            1           6
+1           0.000348    0.000102
+10          0.000913    0.000111
+25          0.001752    0.000127
