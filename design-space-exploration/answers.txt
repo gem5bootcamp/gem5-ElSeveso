@@ -1,0 +1,15 @@
+
+1) Performance comparation: 
+    The graphic shows in the green columns that for the same workload (1,2, and 3), the big processor outperformed the little one. 
+    This is because the big one process more instruccions per cyle than the little processor, so, it can complete the execution in a small time.
+
+    The execution time, ipc, and hit rate of the little processor have not been affected by the size of caches (this maybe can be because the size of both caches used was bigger than the memory used by the workloads) or memory, on the other hand, on the big one they have been affected by the memory size.
+
+2)
+
+    Using the three or four level cache, the execution time practicaly don't change, only in same workloads the bigger processor obtain a small improve in the performance. But
+    Moreover, the hit rate had been improve with the three level cache (for all workloads) in big and little processor. The relation between the hit rates are the same.
+
+3)
+    A bigger processor will be a better selection if you want take the execution time down. Refering to the cache levels or cache size, the selection will be depend on the workload to execute and how much memory use it.
+    
